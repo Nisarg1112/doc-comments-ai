@@ -34,16 +34,34 @@ Built with [langchain](https://github.com/langchain-ai/langchain), [treesitter](
 
 ## 🚀 Usage
 
-Create documentations for any method in a file specified by `<RELATIVE_FILE_PATH>` with GPT-3.5-Turbo model:
+Get help:
+```
+aicomment --help
+```
+Generate documentation for all method in a file specified by `<RELATIVE_FILE_PATH>` with GPT-3.5-Turbo model:
 ```
 aicomment <RELATIVE_FILE_PATH>
 ```
 
-Create also documentation comments in the method body:
+Generate documentation for only those functions with length longer than the specified threshold (default: 3):
+```
+aicomment <RELATIVE_FILE_PATH> --line_threshold=10
+```
+Generates documentation with code included. (default - It generates only comment.)
+```
+aicomment <RELATIVE_FILE_PATH> --comment_with_source_code
+```
+Note:
+- The use of `--comment_with_source_code` is not advisable.
+- This option, due to the non-deterministic nature of Language Models (LLMs), may result in generating a modified function rather than the original.
+- Exercise caution when utilizing this option, as it can introduce errors and uncertainties in the generated documentation.
+- Additionally, be aware that token usage will be higher when using this option.
+
+Create documentation comments inside the method body i.e. writing in-line comments:
 ```
 aicomment <RELATIVE_FILE_PATH> --inline
 ```
-Guided mode, confirm documentation generation for each method:
+Guided mode: confirm documentation generation for each method:
 ```
 aicomment <RELATIVE_FILE_PATH> --guided
 ```
