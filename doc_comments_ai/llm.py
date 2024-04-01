@@ -76,6 +76,20 @@ class LLM:
         Generates a doc comment for the given method
         """
 
+        if language == "haskell":
+            haskell_missing_signature = "and missing type signatures "
+            example_doc_comment = (
+                """
+                Example Comment for Haskell language:
+                -- | This is the first line of a demo comment.
+                -- This is the second line of a demo comment."
+                i.e. Correct comment delimiters for Haskell language is '-- ' where the first line of the comment will be prefixed with '-- | '.
+                """
+            )
+        else:
+            haskell_missing_signature = ""
+            example_doc_comment = None
+
         if inline:
             comment_instructions = (
                 "Add inline comments to the method body where it makes sense."
@@ -92,21 +106,11 @@ class LLM:
                 "Return the doc comment as a markdown block. "
                 "If the doc comment consists of more than one sentence then please follow multi-line comments."
                 f"IMPORTANT: Please avoid writing any code in the markdown block. Ensure that the markdown block contains only doc comments and enclose them appropriately using the correct comment delimiters for the {language} language."
-                """
-                Example Comment for Haskell language:
-                -- | This is the first line of a demo comment.
-                -- This is the second line of a demo comment."
-                i.e. Correct comment delimiters for Haskell language is '-- ' where the first line of the comment will be prefixed with '-- | '.
-                """
+                f"{"" if example_doc_comment is None else example_doc_comment}"
                 "Strictly avoid writing detailed comments for self-explanatory functions."
                 "IMPORTANT: Strictly refrain from detailing input parameters or specifying what the function takes as input and its definition. This is crucial to meet my use case."
                 "IMPORTANT: Please follow only the specified format. This is very important to satisfy my use case."
             )
-
-        if language == "haskell":
-            haskell_missing_signature = "and missing type signatures "
-        else:
-            haskell_missing_signature = ""
 
         input = {
             "language": language,

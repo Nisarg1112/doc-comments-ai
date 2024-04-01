@@ -193,21 +193,37 @@ def get_bold_text(text):
     return f"\033[01m{text}\033[0m"
 
 
-def has_unstaged_changes(file):
-    """
-    Checks if the given file has any unstaged changes in the Git repository.
+# def has_unstaged_changes(file):
+#     """
+#     Checks if the given file has any unstaged changes in the Git repository.
 
-    Args:
-        file (str): The name of the file to check for unstaged changes.
+#     Args:
+#         file (str): The name of the file to check for unstaged changes.
 
-    Returns:
-        bool: Returns True if the file has unstaged changes, otherwise returns False.
-    """
-    try:
-        subprocess.check_output(["git", "diff", "--quiet", file])
-        return False
-    except subprocess.CalledProcessError:
-        return True
+#     Returns:
+#         bool: Returns True if the file has unstaged changes, otherwise returns False.
+#     """
+#     try:
+#         subprocess.check_output(["git", "diff", "--quiet", file])
+#         return False
+#     except subprocess.CalledProcessError:
+#         return True
+
+def has_unstaged_changes(file_path):  
+    try:  
+        # Run the git diff command to get the list of unstaged changes for the specified file  
+        result = subprocess.run(['git', 'diff', '--name-only', file_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)  
+          
+        # Check if the command was successful  
+        if result.returncode == 0:  
+            # If the output is not empty, there are unstaged changes  
+            return len(result.stdout.strip()) > 0  
+        else:  
+            # print("Error checking unstaged changes:", result.stderr)  
+            return False  
+    except Exception as e:  
+        # print("Exception occurred while checking unstaged changes:", e)  
+        return False 
 
 
 def count_tokens(text):
